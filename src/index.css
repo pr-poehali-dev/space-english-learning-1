@@ -409,6 +409,20 @@
   padding: 20px;
 }
 
+/* Shake for wrong match */
+@keyframes shake {
+  0%,
+  100% {
+    transform: translateX(0);
+  }
+  25% {
+    transform: translateX(-6px);
+  }
+  75% {
+    transform: translateX(6px);
+  }
+}
+
 /* Achievement badge */
 @keyframes achievement-pop {
   0% {

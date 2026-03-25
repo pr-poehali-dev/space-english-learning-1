@@ -366,201 +366,520 @@ function LessonsPage() {
 }
 
 // ─── TASKS PAGE ───────────────────────────────────────────────────────────────
-const quizQuestions = [
+
+type TaskType = "cards" | "wordbuild" | "match" | "fill";
+
+interface Task {
+  id: number;
+  type: TaskType;
+  badge: string;
+  question: string;
+  // cards
+  options?: string[];
+  correct?: number;
+  explanation?: string;
+  // wordbuild
+  words?: string[];
+  sentence?: string;
+  // match
+  pairs?: [string, string][];
+  // fill
+  answer?: string;
+  hint?: string;
+  before?: string;
+  after?: string;
+}
+
+const allTasks: Task[] = [
   {
-    id: 1, type: "multiple",
-    question: "What does 'nominal' mean in Mission Control language?",
-    options: ["Broken / malfunctioning", "Normal / as expected", "Emergency stop", "Slow down procedure"],
+    id: 1, type: "cards", badge: "🎯 Выбор ответа",
+    question: "Что означает слово 'nominal' в языке ЦУП?",
+    options: ["Сломан / неисправен", "Штатно / как и ожидалось", "Аварийная остановка", "Замедлить процедуру"],
     correct: 1,
-    explanation: "'Nominal' in aerospace means everything is operating normally and as planned. It's one of the most important Mission Control terms.",
+    explanation: "'Nominal' — всё работает нормально, по плану. Одно из ключевых слов Mission Control! 🚀",
   },
   {
-    id: 2, type: "fill",
-    question: "Complete the sentence using Future Perfect:\n'The spacecraft will have _______ orbital velocity by T+120 seconds.'",
-    answer: "reached",
-    hint: "Глагол 'reach' в форме Future Perfect = will have + Past Participle",
+    id: 2, type: "wordbuild", badge: "🔤 Собери фразу",
+    question: "Собери правило EVA в правильном порядке:",
+    words: ["must", "Before", "you", "your", "check", "opening", "the airlock,", "tether"],
+    sentence: "Before opening the airlock, you must check your tether",
   },
   {
-    id: 3, type: "multiple",
-    question: "Which term describes the CLOSEST point of a spacecraft's orbit to Earth?",
-    options: ["Apogee", "Zenith", "Perigee", "Nadir"],
+    id: 3, type: "cards", badge: "🎯 Выбор ответа",
+    question: "Какая точка орбиты БЛИЖЕ всего к Земле?",
+    options: ["Apogee 🔴", "Zenith ⬆️", "Perigee 🟢", "Nadir ⬇️"],
     correct: 2,
-    explanation: "Perigee is the nearest point in orbit to Earth. Apogee is the farthest. From Greek: peri = near, apo = away, geo = earth.",
+    explanation: "Perigee = ближайшая точка орбиты. Apogee = дальняя. От греч. peri = около, geo = земля 🌍",
   },
   {
-    id: 4, type: "multiple",
-    question: "Choose the correct Passive Voice form:\n'Mission data ___ to ground stations every orbit.'",
-    options: ["transmits", "is being transmitting", "is transmitted", "has transmit"],
-    correct: 2,
-    explanation: "Present Simple Passive = is/are + past participle. 'Data is transmitted' — регулярное действие в пассивном залоге.",
+    id: 4, type: "match", badge: "🔗 Соедини пары",
+    question: "Соедини космический термин с переводом:",
+    pairs: [
+      ["Trajectory", "Траектория"],
+      ["Telemetry", "Телеметрия"],
+      ["Airlock", "Шлюз"],
+      ["Abort", "Прерывание"],
+    ],
   },
   {
-    id: 5, type: "fill",
-    question: "Translate using Conditional II:\n«Если бы двигатель вышел из строя, мы бы активировали резервную систему.»",
-    answer: "If the engine failed we would activate the backup system",
-    hint: "If + Past Simple, ... would + Infinitive (без to)",
+    id: 5, type: "fill", badge: "✍️ Вставь слово",
+    question: "Вставь правильную форму глагола:",
+    before: "Mission data",
+    after: "to ground stations every orbit. (transmit — Passive Voice)",
+    answer: "is transmitted",
+    hint: "Present Simple Passive: is + глагол + -ed",
   },
   {
-    id: 6, type: "multiple",
-    question: "Complete the EVA safety procedure:\n'Before opening the airlock, you ___ check your tether connection.'",
-    options: ["can", "might", "must", "should probably"],
-    correct: 2,
-    explanation: "'Must' выражает строгое обязательство / requirement — критически важно при выходе в открытый космос.",
+    id: 6, type: "cards", badge: "🎯 Выбор ответа",
+    question: "Что такое 'escape velocity'?",
+    options: [
+      "Скорость стыковки",
+      "Вторая космическая скорость",
+      "Скорость выхода в открытый космос",
+      "Скорость звука в атмосфере",
+    ],
+    correct: 1,
+    explanation: "Escape velocity = вторая космическая скорость — минимальная скорость для выхода из гравитационного поля планеты ⚡",
+  },
+  {
+    id: 7, type: "wordbuild", badge: "🔤 Собери фразу",
+    question: "Собери предложение про чёрную дыру:",
+    words: ["is", "A black hole", "an object", "whose", "so strong", "gravity is", "that nothing", "can escape"],
+    sentence: "A black hole is an object whose gravity is so strong that nothing can escape",
+  },
+  {
+    id: 8, type: "match", badge: "🔗 Соедини пары",
+    question: "Соедини тип орбиты или явления с описанием:",
+    pairs: [
+      ["Apogee", "Дальняя точка орбиты"],
+      ["Microgravity", "Невесомость на МКС"],
+      ["Downlink", "Связь спутник → Земля"],
+      ["Tether", "Страховочный трос"],
+    ],
+  },
+  {
+    id: 9, type: "fill", badge: "✍️ Вставь слово",
+    question: "Вставь правильное модальное слово:",
+    before: "Astronauts",
+    after: "wear a spacesuit during EVA. It is not optional. (обязательство)",
+    answer: "must",
+    hint: "Строгое обязательство — один из модальных глаголов",
+  },
+  {
+    id: 10, type: "cards", badge: "🎯 Выбор ответа",
+    question: "Выбери правильный перевод фразы 'attitude control':",
+    options: [
+      "Контроль поведения экипажа",
+      "Управление ориентацией аппарата",
+      "Управление скоростью полёта",
+      "Система жизнеобеспечения",
+    ],
+    correct: 1,
+    explanation: "'Attitude' в авиации/космосе = ориентация в пространстве (тангаж, крен, рыскание). Не 'отношение'! 🛸",
   },
 ];
 
-function TasksPage() {
-  const [current, setCurrent] = useState(0);
-  const [selected, setSelected] = useState<number | null>(null);
-  const [fillAnswer, setFillAnswer] = useState("");
-  const [showResult, setShowResult] = useState(false);
-  const [score, setScore] = useState(0);
+// ── WordBuild task ────────────────────────────────────────────────────────────
+function WordBuildTask({
+  task, onResult,
+}: {
+  task: Task;
+  onResult: (ok: boolean) => void;
+}) {
+  const shuffled = [...task.words!].sort(() => Math.random() - 0.5);
+  const [available, setAvailable] = useState<string[]>(shuffled);
+  const [chosen, setChosen] = useState<string[]>([]);
+  const [result, setResult] = useState<null | boolean>(null);
+
+  function pick(word: string, idx: number) {
+    if (result !== null) return;
+    setChosen((c) => [...c, word]);
+    setAvailable((a) => a.filter((_, i) => i !== idx));
+  }
+  function unpick(word: string, idx: number) {
+    if (result !== null) return;
+    setAvailable((a) => [...a, word]);
+    setChosen((c) => c.filter((_, i) => i !== idx));
+  }
+  function check() {
+    const userSentence = chosen.join(" ").toLowerCase().replace(/[.,!?]/g, "");
+    const correct = task.sentence!.toLowerCase().replace(/[.,!?]/g, "");
+    const ok = userSentence === correct;
+    setResult(ok);
+    onResult(ok);
+  }
+
+  return (
+    <div>
+      {/* Drop zone */}
+      <div
+        className="min-h-16 rounded-2xl p-4 mb-4 flex flex-wrap gap-2 items-center"
+        style={{ background: "rgba(45,27,105,0.4)", border: `2px dashed ${result === null ? "rgba(168,85,247,0.4)" : result ? "#4ade80" : "#ef4444"}` }}
+      >
+        {chosen.length === 0 && (
+          <span className="text-sm" style={{ color: "#6d5a9e" }}>Нажимай слова снизу →</span>
+        )}
+        {chosen.map((w, i) => (
+          <button
+            key={i}
+            onClick={() => unpick(w, i)}
+            className="px-3 py-1.5 rounded-lg text-sm font-semibold transition-all hover:scale-105"
+            style={{ background: "rgba(168,85,247,0.5)", color: "#e9d5ff", border: "1px solid rgba(168,85,247,0.7)" }}
+          >
+            {w}
+          </button>
+        ))}
+      </div>
+
+      {/* Available words */}
+      <div className="flex flex-wrap gap-2 mb-6">
+        {available.map((w, i) => (
+          <button
+            key={i}
+            onClick={() => pick(w, i)}
+            className="px-3 py-1.5 rounded-lg text-sm font-semibold transition-all hover:scale-105 active:scale-95"
+            style={{ background: "rgba(6,182,212,0.2)", color: "#67e8f9", border: "1px solid rgba(6,182,212,0.4)" }}
+          >
+            {w}
+          </button>
+        ))}
+      </div>
+
+      {result === null ? (
+        <button
+          className="btn-space px-8 py-3"
+          onClick={check}
+          style={{ opacity: chosen.length === 0 ? 0.4 : 1 }}
+          disabled={chosen.length === 0}
+        >
+          Проверить
+        </button>
+      ) : (
+        <div
+          className="p-4 rounded-xl text-sm"
+          style={{
+            background: result ? "rgba(74,222,128,0.1)" : "rgba(239,68,68,0.1)",
+            border: `1px solid ${result ? "#4ade80" : "#ef4444"}`,
+            color: result ? "#86efac" : "#fca5a5",
+          }}
+        >
+          {result ? "✓ Верно! Отличная работа, космонавт!" : `✗ Правильно: "${task.sentence}"`}
+        </div>
+      )}
+    </div>
+  );
+}
+
+// ── Match task ────────────────────────────────────────────────────────────────
+function MatchTask({ task, onResult }: { task: Task; onResult: (ok: boolean) => void }) {
+  const lefts = task.pairs!.map((p) => p[0]);
+  const rights = [...task.pairs!.map((p) => p[1])].sort(() => Math.random() - 0.5);
+  const [leftSel, setLeftSel] = useState<number | null>(null);
+  const [matched, setMatched] = useState<Record<number, number>>({});
+  const [wrong, setWrong] = useState<number | null>(null);
   const [done, setDone] = useState(false);
-  const [fillCorrect, setFillCorrect] = useState<boolean | null>(null);
 
-  const q = quizQuestions[current];
-  const isLast = current === quizQuestions.length - 1;
-
-  function checkAnswer() {
-    if (q.type === "multiple" && selected !== null) {
-      if (selected === q.correct) setScore((s) => s + 1);
-      setShowResult(true);
-    } else if (q.type === "fill") {
-      const userAns = fillAnswer.trim().toLowerCase();
-      const correct = q.answer.toLowerCase();
-      const isOk = userAns.split(" ").some((w) => correct.split(" ").includes(w) && w.length > 3);
-      setFillCorrect(isOk);
-      if (isOk) setScore((s) => s + 1);
-      setShowResult(true);
+  function pickLeft(i: number) {
+    if (done || Object.keys(matched).some((k) => parseInt(k) === i)) return;
+    setLeftSel(i);
+  }
+  function pickRight(j: number) {
+    if (done || leftSel === null) return;
+    if (Object.values(matched).includes(j)) return;
+    const expectedRight = task.pairs![leftSel][1];
+    if (rights[j] === expectedRight) {
+      const next = { ...matched, [leftSel]: j };
+      setMatched(next);
+      setLeftSel(null);
+      if (Object.keys(next).length === task.pairs!.length) {
+        setDone(true);
+        onResult(true);
+      }
+    } else {
+      setWrong(j);
+      setTimeout(() => { setWrong(null); setLeftSel(null); }, 700);
     }
   }
 
-  function nextQuestion() {
+  return (
+    <div>
+      <div className="grid grid-cols-2 gap-3 mb-4">
+        <div className="flex flex-col gap-2">
+          {lefts.map((l, i) => {
+            const isMatched = Object.keys(matched).some((k) => parseInt(k) === i);
+            const isSelected = leftSel === i;
+            return (
+              <button
+                key={i}
+                onClick={() => pickLeft(i)}
+                className="p-3 rounded-xl text-sm font-semibold text-left transition-all"
+                style={{
+                  background: isMatched ? "rgba(74,222,128,0.15)" : isSelected ? "rgba(168,85,247,0.4)" : "rgba(45,27,105,0.5)",
+                  border: `2px solid ${isMatched ? "#4ade80" : isSelected ? "#a855f7" : "rgba(168,85,247,0.3)"}`,
+                  color: isMatched ? "#86efac" : isSelected ? "#e9d5ff" : "#c4b5fd",
+                  transform: isSelected ? "scale(1.03)" : "scale(1)",
+                }}
+              >
+                {isMatched && "✓ "}{l}
+              </button>
+            );
+          })}
+        </div>
+        <div className="flex flex-col gap-2">
+          {rights.map((r, j) => {
+            const isMatched = Object.values(matched).includes(j);
+            const isWrong = wrong === j;
+            return (
+              <button
+                key={j}
+                onClick={() => pickRight(j)}
+                className="p-3 rounded-xl text-sm font-semibold text-left transition-all"
+                style={{
+                  background: isMatched ? "rgba(74,222,128,0.15)" : isWrong ? "rgba(239,68,68,0.2)" : leftSel !== null ? "rgba(6,182,212,0.15)" : "rgba(45,27,105,0.3)",
+                  border: `2px solid ${isMatched ? "#4ade80" : isWrong ? "#ef4444" : leftSel !== null ? "rgba(6,182,212,0.5)" : "rgba(168,85,247,0.2)"}`,
+                  color: isMatched ? "#86efac" : isWrong ? "#fca5a5" : "#a5f3fc",
+                  animation: isWrong ? "shake 0.3s ease" : undefined,
+                }}
+              >
+                {isMatched && "✓ "}{r}
+              </button>
+            );
+          })}
+        </div>
+      </div>
+      {done && (
+        <div className="p-4 rounded-xl text-sm" style={{ background: "rgba(74,222,128,0.1)", border: "1px solid #4ade80", color: "#86efac" }}>
+          ✓ Все пары найдены! Отлично, космонавт! 🚀
+        </div>
+      )}
+      {!done && leftSel !== null && (
+        <p className="text-sm" style={{ color: "#67e8f9" }}>← Теперь выбери правильный перевод справа</p>
+      )}
+      {!done && leftSel === null && Object.keys(matched).length === 0 && (
+        <p className="text-sm" style={{ color: "#a78bfa" }}>← Начни с выбора слова слева</p>
+      )}
+    </div>
+  );
+}
+
+// ── Fill task ─────────────────────────────────────────────────────────────────
+function FillTask({ task, onResult }: { task: Task; onResult: (ok: boolean) => void }) {
+  const [value, setValue] = useState("");
+  const [result, setResult] = useState<null | boolean>(null);
+
+  function check() {
+    const ok = value.trim().toLowerCase() === task.answer!.toLowerCase();
+    setResult(ok);
+    onResult(ok);
+  }
+
+  return (
+    <div>
+      <div className="flex flex-wrap items-center gap-2 mb-4 text-lg text-white font-rubik">
+        <span>{task.before}</span>
+        <input
+          type="text"
+          value={value}
+          onChange={(e) => result === null && setValue(e.target.value)}
+          onKeyDown={(e) => e.key === "Enter" && value && result === null && check()}
+          placeholder="___________"
+          className="px-4 py-2 rounded-xl outline-none font-semibold text-center"
+          style={{
+            background: "rgba(45,27,105,0.6)",
+            border: `2px solid ${result === null ? "rgba(168,85,247,0.5)" : result ? "#4ade80" : "#ef4444"}`,
+            color: result === null ? "white" : result ? "#86efac" : "#fca5a5",
+            minWidth: 160,
+          }}
+          disabled={result !== null}
+        />
+        <span>{task.after}</span>
+      </div>
+
+      <div className="text-sm mb-5" style={{ color: "#a78bfa" }}>
+        💡 {task.hint}
+      </div>
+
+      {result === null ? (
+        <button className="btn-space px-8 py-3" onClick={check} style={{ opacity: value ? 1 : 0.4 }} disabled={!value}>
+          Проверить
+        </button>
+      ) : (
+        <div
+          className="p-4 rounded-xl text-sm"
+          style={{
+            background: result ? "rgba(74,222,128,0.1)" : "rgba(239,68,68,0.1)",
+            border: `1px solid ${result ? "#4ade80" : "#ef4444"}`,
+            color: result ? "#86efac" : "#fca5a5",
+          }}
+        >
+          {result ? "✓ Правильно!" : `✗ Правильный ответ: "${task.answer}"`}
+        </div>
+      )}
+    </div>
+  );
+}
+
+function TasksPage() {
+  const [current, setCurrent] = useState(0);
+  const [score, setScore] = useState(0);
+  const [answered, setAnswered] = useState(false);
+  const [selectedCard, setSelectedCard] = useState<number | null>(null);
+  const [done, setDone] = useState(false);
+
+  const q = allTasks[current];
+  const isLast = current === allTasks.length - 1;
+
+  function handleResult(ok: boolean) {
+    if (!answered) {
+      setAnswered(true);
+      if (ok) setScore((s) => s + 1);
+    }
+  }
+
+  function handleCardSelect(i: number) {
+    if (answered) return;
+    setSelectedCard(i);
+    const ok = i === q.correct;
+    setAnswered(true);
+    if (ok) setScore((s) => s + 1);
+  }
+
+  function next() {
     if (isLast) { setDone(true); return; }
     setCurrent((c) => c + 1);
-    setSelected(null);
-    setFillAnswer("");
-    setShowResult(false);
-    setFillCorrect(null);
+    setAnswered(false);
+    setSelectedCard(null);
   }
 
   function reset() {
-    setCurrent(0); setSelected(null); setFillAnswer(""); setShowResult(false); setScore(0); setDone(false); setFillCorrect(null);
+    setCurrent(0); setScore(0); setAnswered(false); setSelectedCard(null); setDone(false);
   }
 
   if (done) {
-    const pct = Math.round((score / quizQuestions.length) * 100);
+    const pct = Math.round((score / allTasks.length) * 100);
     return (
       <div className="flex flex-col items-center text-center py-10 fade-in-up">
         <div className="text-7xl mb-4 achievement-pop">{pct >= 80 ? "🏆" : pct >= 60 ? "🥈" : "📚"}</div>
         <h2 className="font-exo font-black text-3xl text-white mb-2">Задания завершены!</h2>
-        <p className="text-xl mb-2" style={{ color: "#c4b5fd" }}>{score} / {quizQuestions.length} правильных</p>
-        <div className="text-5xl font-exo font-black mb-6" style={{ color: pct >= 80 ? "#4ade80" : pct >= 60 ? "#fbbf24" : "#f87171" }}>{pct}%</div>
+        <p className="text-xl mb-2" style={{ color: "#c4b5fd" }}>{score} / {allTasks.length} правильных</p>
+        <div className="text-5xl font-exo font-black mb-4" style={{ color: pct >= 80 ? "#4ade80" : pct >= 60 ? "#fbbf24" : "#f87171" }}>{pct}%</div>
+        <div className="flex gap-1 mb-6">
+          {allTasks.map((_, i) => (
+            <div key={i} className="w-2 h-2 rounded-full" style={{ background: i < score ? "#4ade80" : "#ef4444" }} />
+          ))}
+        </div>
         <p className="mb-8 max-w-sm" style={{ color: "#a78bfa" }}>
-          {pct >= 80 ? "Отличная работа, космонавт! Ты готов к настоящей миссии 🚀" : pct >= 60 ? "Неплохо! Повтори Unit 1–2 и попробуй снова." : "Рекомендуем повторить уроки перед следующей попыткой."}
+          {pct >= 80 ? "Отличная работа, космонавт! Ты готов к настоящей миссии 🚀" : pct >= 60 ? "Неплохо! Ещё немного практики — и ты в строю." : "Повтори уроки — и попробуй снова. Ты справишься!"}
         </p>
         <button className="btn-space px-8 py-3" onClick={reset}>🔄 Пройти снова</button>
       </div>
     );
   }
 
+  const progressPct = (current / allTasks.length) * 100;
+
   return (
     <div>
       <h2 className="font-exo font-black text-3xl text-white mb-2 fade-in-up-1">✏️ Интерактивные задания</h2>
-      <p className="mb-6 fade-in-up-2" style={{ color: "#a78bfa" }}>Лексика и грамматика в контексте реальных космических ситуаций</p>
+      <p className="mb-5 fade-in-up-2" style={{ color: "#a78bfa" }}>Лексика и грамматика в реальных космических ситуациях</p>
 
-      <div className="mb-8 fade-in-up-3">
-        <div className="flex justify-between text-sm mb-2" style={{ color: "#a78bfa" }}>
-          <span>Вопрос {current + 1} из {quizQuestions.length}</span>
-          <span style={{ color: "#4ade80" }}>✓ Правильно: {score}</span>
+      {/* Progress bar */}
+      <div className="mb-6 fade-in-up-3">
+        <div className="flex justify-between text-sm mb-2">
+          <span style={{ color: "#a78bfa" }}>Задание {current + 1} из {allTasks.length}</span>
+          <span style={{ color: "#4ade80" }}>⭐ {score} правильных</span>
         </div>
-        <div className="h-2 rounded-full" style={{ background: "rgba(168,85,247,0.2)" }}>
-          <div className="progress-bar" style={{ width: `${(current / quizQuestions.length) * 100}%` }} />
+        <div className="h-2.5 rounded-full overflow-hidden" style={{ background: "rgba(168,85,247,0.15)" }}>
+          <div className="progress-bar h-full transition-all duration-500" style={{ width: `${progressPct}%` }} />
+        </div>
+        {/* Step dots */}
+        <div className="flex gap-1 mt-2">
+          {allTasks.map((_, i) => (
+            <div
+              key={i}
+              className="flex-1 h-1 rounded-full transition-all"
+              style={{ background: i < current ? "#a855f7" : i === current ? "#67e8f9" : "rgba(168,85,247,0.15)" }}
+            />
+          ))}
         </div>
       </div>
 
-      <div className="space-card rounded-3xl p-8 fade-in-up-4">
-        <div className="mb-4">
-          <span className="badge-space">
-            {q.type === "multiple" ? "🎯 Multiple Choice" : "✍️ Fill in the blank"}
-          </span>
+      {/* Question card */}
+      <div className="space-card rounded-3xl p-7 fade-in-up-4">
+        <div className="flex items-center gap-3 mb-5">
+          <span className="badge-space text-sm">{q.badge}</span>
+          <span className="text-xs" style={{ color: "#7c6aad" }}>Unit {Math.ceil(q.id / 2)}</span>
         </div>
 
-        <h3 className="font-rubik font-semibold text-xl text-white mb-6 leading-relaxed whitespace-pre-line">{q.question}</h3>
+        <h3 className="font-rubik font-semibold text-xl text-white mb-6 leading-relaxed">{q.question}</h3>
 
-        {q.type === "multiple" && (
-          <div className="flex flex-col gap-3 mb-6">
-            {q.options!.map((opt, i) => (
-              <button
-                key={i}
-                className={`answer-btn ${showResult ? (i === q.correct ? "correct" : selected === i ? "wrong" : "") : ""}`}
-                style={!showResult && selected === i ? { background: "rgba(168,85,247,0.3)", borderColor: "#a855f7" } : {}}
-                onClick={() => !showResult && setSelected(i)}
-                disabled={showResult}
-              >
-                <span className="font-mono text-sm mr-3" style={{ color: "#7c6aad" }}>{["A", "B", "C", "D"][i]}.</span>
-                {opt}
-              </button>
-            ))}
-          </div>
-        )}
-
-        {q.type === "fill" && (
-          <div className="mb-6">
-            <div className="text-sm mb-2" style={{ color: "#a78bfa" }}>💡 {q.hint}</div>
-            <input
-              type="text"
-              value={fillAnswer}
-              onChange={(e) => !showResult && setFillAnswer(e.target.value)}
-              onKeyDown={(e) => e.key === "Enter" && !showResult && fillAnswer && checkAnswer()}
-              placeholder="Введи ответ на английском..."
-              disabled={showResult}
-              className="w-full p-4 rounded-xl text-white font-rubik outline-none"
-              style={{
-                background: "rgba(45,27,105,0.5)",
-                border: `2px solid ${showResult ? (fillCorrect ? "#4ade80" : "#ef4444") : "rgba(168,85,247,0.3)"}`,
-                "::placeholder": { color: "#6d28d9" },
-              } as React.CSSProperties}
-            />
-            {showResult && (
-              <div
-                className="mt-3 p-3 rounded-xl text-sm"
-                style={{
-                  background: fillCorrect ? "rgba(74,222,128,0.1)" : "rgba(239,68,68,0.1)",
-                  border: `1px solid ${fillCorrect ? "#4ade80" : "#ef4444"}`,
-                  color: fillCorrect ? "#86efac" : "#fca5a5",
-                }}
-              >
-                {fillCorrect ? "✓ Правильно!" : `✗ Образцовый ответ: "${q.answer}"`}
+        {/* CARDS type */}
+        {q.type === "cards" && (
+          <div>
+            <div className="grid grid-cols-1 sm:grid-cols-2 gap-3 mb-5">
+              {q.options!.map((opt, i) => {
+                const isCorrect = i === q.correct;
+                const isSelected = selectedCard === i;
+                let bg = "rgba(45,27,105,0.5)";
+                let border = "rgba(168,85,247,0.3)";
+                let color = "#c4b5fd";
+                if (answered) {
+                  if (isCorrect) { bg = "rgba(74,222,128,0.15)"; border = "#4ade80"; color = "#86efac"; }
+                  else if (isSelected) { bg = "rgba(239,68,68,0.15)"; border = "#ef4444"; color = "#fca5a5"; }
+                } else if (isSelected) {
+                  bg = "rgba(168,85,247,0.3)"; border = "#a855f7"; color = "#e9d5ff";
+                }
+                return (
+                  <button
+                    key={i}
+                    onClick={() => handleCardSelect(i)}
+                    disabled={answered}
+                    className="p-4 rounded-2xl text-left transition-all font-rubik font-medium text-sm"
+                    style={{
+                      background: bg, border: `2px solid ${border}`, color,
+                      transform: !answered && isSelected ? "scale(1.02)" : "scale(1)",
+                    }}
+                  >
+                    <span
+                      className="inline-block w-6 h-6 rounded-full text-xs font-bold text-center leading-6 mr-2"
+                      style={{ background: answered && isCorrect ? "#4ade80" : "rgba(168,85,247,0.3)", color: answered && isCorrect ? "#052e16" : "#c4b5fd" }}
+                    >
+                      {answered && isCorrect ? "✓" : ["A","B","C","D"][i]}
+                    </span>
+                    {opt}
+                  </button>
+                );
+              })}
+            </div>
+            {answered && q.explanation && (
+              <div className="p-4 rounded-xl text-sm animate-fade-in" style={{ background: "rgba(6,182,212,0.1)", border: "1px solid rgba(6,182,212,0.3)", color: "#a5f3fc" }}>
+                💡 {q.explanation}
               </div>
             )}
           </div>
         )}
 
-        {showResult && q.type === "multiple" && (
-          <div
-            className="mb-6 p-4 rounded-xl text-sm"
-            style={{ background: "rgba(6,182,212,0.1)", border: "1px solid rgba(6,182,212,0.3)", color: "#a5f3fc" }}
-          >
-            💡 {q.explanation}
-          </div>
+        {/* WORDBUILD type */}
+        {q.type === "wordbuild" && (
+          <WordBuildTask task={q} onResult={handleResult} />
         )}
 
-        <div className="flex gap-4">
-          {!showResult ? (
-            <button
-              className="btn-space px-8 py-3"
-              onClick={checkAnswer}
-              style={{ opacity: (q.type === "multiple" ? selected === null : !fillAnswer.trim()) ? 0.4 : 1 }}
-            >
-              Проверить ответ
-            </button>
-          ) : (
-            <button className="btn-space px-8 py-3" onClick={nextQuestion}>
-              {isLast ? "🏆 Завершить" : "Следующий →"}
-            </button>
-          )}
-        </div>
+        {/* MATCH type */}
+        {q.type === "match" && (
+          <MatchTask task={q} onResult={handleResult} />
+        )}
+
+        {/* FILL type */}
+        {q.type === "fill" && (
+          <FillTask task={q} onResult={handleResult} />
+        )}
+
+        {/* Next button — show after answer */}
+        {answered && (
+          <button className="btn-space px-8 py-3 mt-5 animate-fade-in" onClick={next}>
+            {isLast ? "🏆 Завершить" : "Следующее задание →"}
+          </button>
+        )}
       </div>
     </div>
   );
