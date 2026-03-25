@@ -4,89 +4,54 @@
 
 @layer base {
   :root {
-    --background: 0 0% 100%;
-    --foreground: 222.2 84% 4.9%;
+    --background: 252 60% 8%;
+    --foreground: 210 40% 98%;
 
-    --card: 0 0% 100%;
-    --card-foreground: 222.2 84% 4.9%;
+    --card: 252 50% 12%;
+    --card-foreground: 210 40% 98%;
 
-    --popover: 0 0% 100%;
-    --popover-foreground: 222.2 84% 4.9%;
+    --popover: 252 50% 12%;
+    --popover-foreground: 210 40% 98%;
 
-    --primary: 222.2 47.4% 11.2%;
-    --primary-foreground: 210 40% 98%;
+    --primary: 280 100% 65%;
+    --primary-foreground: 0 0% 100%;
 
-    --secondary: 210 40% 96.1%;
-    --secondary-foreground: 222.2 47.4% 11.2%;
+    --secondary: 200 100% 60%;
+    --secondary-foreground: 252 60% 8%;
 
-    --muted: 210 40% 96.1%;
-    --muted-foreground: 215.4 16.3% 46.9%;
+    --muted: 252 40% 18%;
+    --muted-foreground: 215 20.2% 65.1%;
 
-    --accent: 210 40% 96.1%;
-    --accent-foreground: 222.2 47.4% 11.2%;
+    --accent: 45 100% 60%;
+    --accent-foreground: 252 60% 8%;
 
     --destructive: 0 84.2% 60.2%;
     --destructive-foreground: 210 40% 98%;
 
-    --border: 214.3 31.8% 91.4%;
-    --input: 214.3 31.8% 91.4%;
-    --ring: 222.2 84% 4.9%;
+    --border: 252 40% 22%;
+    --input: 252 40% 18%;
+    --ring: 280 100% 65%;
 
-    --radius: 0.5rem;
+    --radius: 1rem;
 
-    --sidebar-background: 0 0% 98%;
+    /* Custom space colors */
+    --space-deep: #0a0520;
+    --space-purple: #2d1b69;
+    --space-violet: #6b21a8;
+    --space-pink: #ec4899;
+    --space-cyan: #06b6d4;
+    --space-yellow: #fbbf24;
+    --space-green: #4ade80;
+    --space-orange: #f97316;
 
-    --sidebar-foreground: 240 5.3% 26.1%;
-
-    --sidebar-primary: 240 5.9% 10%;
-
-    --sidebar-primary-foreground: 0 0% 98%;
-
-    --sidebar-accent: 240 4.8% 95.9%;
-
-    --sidebar-accent-foreground: 240 5.9% 10%;
-
-    --sidebar-border: 220 13% 91%;
-
-    --sidebar-ring: 217.2 91.2% 59.8%;
-  }
-
-  .dark {
-    --background: 222.2 84% 4.9%;
-    --foreground: 210 40% 98%;
-
-    --card: 222.2 84% 4.9%;
-    --card-foreground: 210 40% 98%;
-
-    --popover: 222.2 84% 4.9%;
-    --popover-foreground: 210 40% 98%;
-
-    --primary: 210 40% 98%;
-    --primary-foreground: 222.2 47.4% 11.2%;
-
-    --secondary: 217.2 32.6% 17.5%;
-    --secondary-foreground: 210 40% 98%;
-
-    --muted: 217.2 32.6% 17.5%;
-    --muted-foreground: 215 20.2% 65.1%;
-
-    --accent: 217.2 32.6% 17.5%;
-    --accent-foreground: 210 40% 98%;
-
-    --destructive: 0 62.8% 30.6%;
-    --destructive-foreground: 210 40% 98%;
-
-    --border: 217.2 32.6% 17.5%;
-    --input: 217.2 32.6% 17.5%;
-    --ring: 212.7 26.8% 83.9%;
-    --sidebar-background: 240 5.9% 10%;
-    --sidebar-foreground: 240 4.8% 95.9%;
-    --sidebar-primary: 224.3 76.3% 48%;
+    --sidebar-background: 252 60% 8%;
+    --sidebar-foreground: 210 40% 98%;
+    --sidebar-primary: 280 100% 65%;
     --sidebar-primary-foreground: 0 0% 100%;
-    --sidebar-accent: 240 3.7% 15.9%;
-    --sidebar-accent-foreground: 240 4.8% 95.9%;
-    --sidebar-border: 240 3.7% 15.9%;
-    --sidebar-ring: 217.2 91.2% 59.8%;
+    --sidebar-accent: 252 40% 18%;
+    --sidebar-accent-foreground: 210 40% 98%;
+    --sidebar-border: 252 40% 22%;
+    --sidebar-ring: 280 100% 65%;
   }
 }
 
@@ -97,5 +62,388 @@
 
   body {
     @apply bg-background text-foreground;
+    font-family: "Rubik", sans-serif;
+    background-color: var(--space-deep);
+    overflow-x: hidden;
   }
+}
+
+/* Stars background */
+.stars-bg {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  pointer-events: none;
+  z-index: 0;
+  overflow: hidden;
+}
+
+.star {
+  position: absolute;
+  background: white;
+  border-radius: 50%;
+  animation: twinkle var(--duration, 3s) infinite alternate;
+}
+
+@keyframes twinkle {
+  0% {
+    opacity: 0.2;
+    transform: scale(1);
+  }
+  100% {
+    opacity: 1;
+    transform: scale(1.4);
+  }
+}
+
+/* Floating planets */
+@keyframes float {
+  0%,
+  100% {
+    transform: translateY(0px) rotate(0deg);
+  }
+  50% {
+    transform: translateY(-20px) rotate(5deg);
+  }
+}
+
+@keyframes float2 {
+  0%,
+  100% {
+    transform: translateY(0px) rotate(0deg);
+  }
+  50% {
+    transform: translateY(-15px) rotate(-3deg);
+  }
+}
+
+@keyframes float3 {
+  0%,
+  100% {
+    transform: translateY(0px);
+  }
+  33% {
+    transform: translateY(-12px);
+  }
+  66% {
+    transform: translateY(-6px);
+  }
+}
+
+.planet-float {
+  animation: float 6s ease-in-out infinite;
+}
+.planet-float2 {
+  animation: float2 8s ease-in-out infinite;
+}
+.planet-float3 {
+  animation: float3 5s ease-in-out infinite;
+}
+
+/* Rocket animation */
+@keyframes rocket-fly {
+  0% {
+    transform: translateY(0px) rotate(-15deg);
+  }
+  50% {
+    transform: translateY(-25px) rotate(-10deg);
+  }
+  100% {
+    transform: translateY(0px) rotate(-15deg);
+  }
+}
+.rocket-anim {
+  animation: rocket-fly 4s ease-in-out infinite;
+}
+
+/* Page fade in */
+@keyframes fadeInUp {
+  from {
+    opacity: 0;
+    transform: translateY(30px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.fade-in-up {
+  animation: fadeInUp 0.6s ease-out forwards;
+}
+.fade-in-up-1 {
+  animation: fadeInUp 0.6s 0.1s ease-out both;
+}
+.fade-in-up-2 {
+  animation: fadeInUp 0.6s 0.2s ease-out both;
+}
+.fade-in-up-3 {
+  animation: fadeInUp 0.6s 0.3s ease-out both;
+}
+.fade-in-up-4 {
+  animation: fadeInUp 0.6s 0.4s ease-out both;
+}
+.fade-in-up-5 {
+  animation: fadeInUp 0.6s 0.5s ease-out both;
+}
+.fade-in-up-6 {
+  animation: fadeInUp 0.6s 0.6s ease-out both;
+}
+
+/* Glow effects */
+.glow-purple {
+  box-shadow: 0 0 30px rgba(168, 85, 247, 0.4);
+}
+.glow-cyan {
+  box-shadow: 0 0 30px rgba(6, 182, 212, 0.4);
+}
+.glow-yellow {
+  box-shadow: 0 0 30px rgba(251, 191, 36, 0.4);
+}
+.glow-pink {
+  box-shadow: 0 0 30px rgba(236, 72, 153, 0.4);
+}
+
+/* Nebula background blobs */
+.nebula-blob {
+  position: absolute;
+  border-radius: 50%;
+  filter: blur(80px);
+  opacity: 0.15;
+  pointer-events: none;
+}
+
+/* Card hover */
+.space-card {
+  transition:
+    transform 0.3s ease,
+    box-shadow 0.3s ease;
+  background: linear-gradient(
+    135deg,
+    rgba(45, 27, 105, 0.6),
+    rgba(15, 8, 40, 0.8)
+  );
+  border: 1px solid rgba(168, 85, 247, 0.3);
+  backdrop-filter: blur(10px);
+}
+
+.space-card:hover {
+  transform: translateY(-6px) scale(1.01);
+  box-shadow: 0 20px 60px rgba(168, 85, 247, 0.3);
+  border-color: rgba(168, 85, 247, 0.7);
+}
+
+/* Nav active */
+.nav-item {
+  transition: all 0.2s ease;
+  cursor: pointer;
+}
+
+.nav-item.active {
+  background: linear-gradient(
+    135deg,
+    rgba(168, 85, 247, 0.4),
+    rgba(6, 182, 212, 0.2)
+  );
+  border-color: rgba(168, 85, 247, 0.8) !important;
+}
+
+/* Progress bar */
+.progress-bar {
+  background: linear-gradient(90deg, #a855f7, #06b6d4);
+  border-radius: 999px;
+  height: 8px;
+  transition: width 0.5s ease;
+}
+
+/* Buttons */
+.btn-space {
+  background: linear-gradient(135deg, #7c3aed, #a855f7);
+  color: white;
+  font-weight: 700;
+  border-radius: 999px;
+  transition: all 0.2s ease;
+  border: none;
+  cursor: pointer;
+}
+
+.btn-space:hover {
+  transform: scale(1.05);
+  box-shadow: 0 8px 30px rgba(168, 85, 247, 0.5);
+}
+
+.btn-cyan {
+  background: linear-gradient(135deg, #0891b2, #06b6d4);
+  color: white;
+  font-weight: 700;
+  border-radius: 999px;
+  transition: all 0.2s ease;
+  cursor: pointer;
+}
+
+.btn-cyan:hover {
+  transform: scale(1.05);
+  box-shadow: 0 8px 30px rgba(6, 182, 212, 0.5);
+}
+
+.btn-yellow {
+  background: linear-gradient(135deg, #d97706, #fbbf24);
+  color: #1a0a00;
+  font-weight: 700;
+  border-radius: 999px;
+  transition: all 0.2s ease;
+  cursor: pointer;
+}
+
+.btn-yellow:hover {
+  transform: scale(1.05);
+  box-shadow: 0 8px 30px rgba(251, 191, 36, 0.5);
+}
+
+/* Quiz answer buttons */
+.answer-btn {
+  background: rgba(45, 27, 105, 0.5);
+  border: 2px solid rgba(168, 85, 247, 0.3);
+  color: white;
+  padding: 12px 20px;
+  border-radius: 12px;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  text-align: left;
+  font-family: "Rubik", sans-serif;
+}
+
+.answer-btn:hover {
+  background: rgba(168, 85, 247, 0.3);
+  border-color: rgba(168, 85, 247, 0.8);
+  transform: translateX(4px);
+}
+
+.answer-btn.correct {
+  background: rgba(74, 222, 128, 0.2);
+  border-color: #4ade80;
+  color: #4ade80;
+}
+
+.answer-btn.wrong {
+  background: rgba(239, 68, 68, 0.2);
+  border-color: #ef4444;
+  color: #ef4444;
+}
+
+/* Planet decorations */
+.planet-yellow {
+  background: radial-gradient(circle at 35% 35%, #fde68a, #f59e0b, #d97706);
+  border-radius: 50%;
+  box-shadow:
+    inset -8px -8px 20px rgba(0, 0, 0, 0.3),
+    0 0 40px rgba(251, 191, 36, 0.3);
+}
+
+.planet-green {
+  background: radial-gradient(circle at 35% 35%, #86efac, #22c55e, #16a34a);
+  border-radius: 50%;
+  box-shadow:
+    inset -8px -8px 20px rgba(0, 0, 0, 0.3),
+    0 0 40px rgba(74, 222, 128, 0.3);
+}
+
+.planet-pink {
+  background: radial-gradient(circle at 35% 35%, #fbcfe8, #ec4899, #be185d);
+  border-radius: 50%;
+  box-shadow:
+    inset -8px -8px 20px rgba(0, 0, 0, 0.3),
+    0 0 40px rgba(236, 72, 153, 0.3);
+}
+
+.planet-blue {
+  background: radial-gradient(circle at 35% 35%, #bae6fd, #38bdf8, #0284c7);
+  border-radius: 50%;
+  box-shadow:
+    inset -8px -8px 20px rgba(0, 0, 0, 0.3),
+    0 0 40px rgba(56, 189, 248, 0.3);
+}
+
+.planet-purple {
+  background: radial-gradient(circle at 35% 35%, #e9d5ff, #a855f7, #7c3aed);
+  border-radius: 50%;
+  box-shadow:
+    inset -8px -8px 20px rgba(0, 0, 0, 0.3),
+    0 0 40px rgba(168, 85, 247, 0.3);
+}
+
+/* Scroll bar */
+::-webkit-scrollbar {
+  width: 6px;
+}
+::-webkit-scrollbar-track {
+  background: var(--space-deep);
+}
+::-webkit-scrollbar-thumb {
+  background: rgba(168, 85, 247, 0.5);
+  border-radius: 3px;
+}
+
+/* Badge */
+.badge-space {
+  background: linear-gradient(135deg, #7c3aed, #a855f7);
+  color: white;
+  padding: 2px 12px;
+  border-radius: 999px;
+  font-size: 12px;
+  font-weight: 700;
+  letter-spacing: 0.05em;
+}
+
+/* Audio player */
+.audio-player {
+  background: linear-gradient(
+    135deg,
+    rgba(6, 182, 212, 0.15),
+    rgba(45, 27, 105, 0.5)
+  );
+  border: 1px solid rgba(6, 182, 212, 0.4);
+  border-radius: 16px;
+  padding: 20px;
+}
+
+/* Achievement badge */
+@keyframes achievement-pop {
+  0% {
+    transform: scale(0) rotate(-10deg);
+    opacity: 0;
+  }
+  60% {
+    transform: scale(1.2) rotate(5deg);
+  }
+  100% {
+    transform: scale(1) rotate(0deg);
+    opacity: 1;
+  }
+}
+.achievement-pop {
+  animation: achievement-pop 0.5s ease-out forwards;
+}
+
+/* Shine effect on cards */
+@keyframes shine {
+  0% {
+    background-position: -200% center;
+  }
+  100% {
+    background-position: 200% center;
+  }
+}
+
+/* Orbit ring for planets */
+.orbit-ring {
+  position: absolute;
+  border: 2px solid rgba(255, 255, 255, 0.2);
+  border-radius: 50%;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%) rotateX(75deg);
+  pointer-events: none;
 }
